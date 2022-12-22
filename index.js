@@ -1,26 +1,55 @@
+// scene 만들기
 const scene = new THREE.Scene();
+
+// 화면 크기
+const size = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
+// 카메라 조정
+
+const adjust = {
+  FIELD_OF_VIEW: 75,
+  ASPECT: size.width / size.height,
+  NEAR: 0.1,
+  FAR: 100,
+};
+
+// 카메라 만들기
 const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+  adjust.FIELD_OF_VIEW,
+  adjust.ASPECT,
+  adjust.NEAR,
+  adjust.FAR
 );
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+// 렌더 인스턴스 만들기
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true,
+});
+
+renderer.setSize(size.width, size.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(new THREE.Color("#21282a"), 1);
+// renderer.render(scene, camera);
+
+// 반응형으로 만들기
+window.addEventListener("resize", () => {
+  // update scene size
+  size.width = window.innerWidth;
+  size.height = window.innerHeight;
+
+  // update camera
+  adjust.ASPECT = size.width / size.height;
+  camera.updateProjectionMatrix();
+
+  // upadate render
+  renderer.setSize(size.width, size.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+// canvas를 html 추가
+renderer.render(scene, camera);
 document.body.appendChild(renderer.domElement);
-
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-camera.position.z = 5;
-
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-}
-animate();
