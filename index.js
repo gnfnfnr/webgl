@@ -50,6 +50,15 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+// 도넛형
+const geometry = new THREE.TorusGeometry(0.7, 0.2, 20, 50);
+const material = new THREE.MeshBasicMaterial({ color: "white" });
+const torus = new THREE.Mesh(geometry, material);
+
+camera.position.z = 2;
+scene.add(camera);
+scene.add(torus);
+
 // canvas를 html 추가
 renderer.render(scene, camera);
 document.body.appendChild(renderer.domElement);
