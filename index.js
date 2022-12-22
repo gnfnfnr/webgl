@@ -59,6 +59,16 @@ camera.position.z = 2;
 scene.add(camera);
 scene.add(torus);
 
+const clock = new THREE.Clock();
+// 도형 움직이기
+function animate() {
+  requestAnimationFrame(animate);
+  const elapsedTime = clock.getElapsedTime();
+  torus.rotation.y = 0.5 * elapsedTime;
+  renderer.render(scene, camera);
+}
+animate();
+
 // canvas를 html 추가
 renderer.render(scene, camera);
 document.body.appendChild(renderer.domElement);
