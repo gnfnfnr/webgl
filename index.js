@@ -58,9 +58,29 @@ const material = new THREE.PointsMaterial({
 });
 const torus = new THREE.Points(geometry, material);
 
+// 작은 입자 만들기
+const particleGeomtry = new THREE.BufferGeometry();
+const particleCount = 5000;
+const postionArray = new Float32Array(particleCount * 3);
+for (let index = 0; index < particleCount * 3; index++) {
+  postionArray[index] = Math.random();
+  // 중심으로 옮기기
+  // postionArray[index] = Math.random() - 0.5;
+  // 사방으로 퍼뜨리기
+  postionArray[index] = (Math.random() - 0.5) * 5;
+}
+
+particleGeomtry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(postionArray, 3)
+);
+
+const particles = new THREE.Points(particleGeomtry, material);
+
 camera.position.z = 2;
 scene.add(camera);
 scene.add(torus);
+scene.add(particles);
 
 const clock = new THREE.Clock();
 // 도형 움직이기
