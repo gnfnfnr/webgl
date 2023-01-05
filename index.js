@@ -75,8 +75,16 @@ particleGeomtry.setAttribute(
   new THREE.BufferAttribute(postionArray, 3)
 );
 
-const particles = new THREE.Points(particleGeomtry, material);
+// 별 모양 이미지 첨가하기
+const loader = new THREE.TextureLoader();
+const star = loader.load("./star.png");
+const paricleMaterial = new THREE.PointsMaterial({
+  size: 0.005,
+  map: star,
+  transparent: true,
+});
 
+const particles = new THREE.Points(particleGeomtry, paricleMaterial);
 camera.position.z = 2;
 scene.add(camera);
 scene.add(torus);
