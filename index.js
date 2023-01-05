@@ -52,8 +52,11 @@ window.addEventListener("resize", () => {
 
 // 도넛형
 const geometry = new THREE.TorusGeometry(0.7, 0.2, 20, 50);
-const material = new THREE.MeshBasicMaterial({ color: "white" });
-const torus = new THREE.Mesh(geometry, material);
+const material = new THREE.PointsMaterial({
+  size: 0.005,
+  color: 0x87a7ca,
+});
+const torus = new THREE.Points(geometry, material);
 
 camera.position.z = 2;
 scene.add(camera);
