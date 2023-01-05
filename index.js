@@ -82,6 +82,7 @@ const paricleMaterial = new THREE.PointsMaterial({
   size: 0.005,
   map: star,
   transparent: true,
+  // color: "blue",
 });
 
 const particles = new THREE.Points(particleGeomtry, paricleMaterial);
