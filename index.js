@@ -91,6 +91,15 @@ scene.add(camera);
 scene.add(torus);
 scene.add(particles);
 
+document.addEventListener("mousemove", animationParticles);
+let mouseY = 0;
+let mouseX = 0;
+
+function animationParticles(event) {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
+}
+
 const clock = new THREE.Clock();
 // 도형 움직이기
 function animate() {
@@ -98,6 +107,10 @@ function animate() {
   const elapsedTime = clock.getElapsedTime();
   torus.rotation.y = 0.5 * elapsedTime;
   renderer.render(scene, camera);
+
+  // elapostItme은 얼마나 지났는지 확인시켜주는 것
+  particles.rotation.y = mouseX * (elapsedTime * 0.00008);
+  particles.rotation.x = mouseY * (elapsedTime * 0.00008);
 }
 animate();
 
