@@ -1,74 +1,76 @@
 import * as THREE from "./three.js-master/build/three.module.js";
 
 class App {
+  #divContainer;
+  #renderer;
+  #scene;
+  #camera;
+  #cube;
+
   constructor() {
-    const divContainer = document.querySelector("#webgl-container");
-    this._divContainer = divContainer;
+    this.#divContainer = document.querySelector("#webgl-container");
 
-    const renderer = new THREE.WebGL1Renderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    divContainer.appendChild(renderer.domElement);
-    this._renderer = renderer;
+    this.#renderer = new THREE.WebGL1Renderer({ antialias: true });
+    this.#renderer.setPixelRatio(window.devicePixelRatio);
+    this.#divContainer.appendChild(this.#renderer.domElement);
 
-    const scene = new THREE.Scene();
-    this._scene = scene;
+    this.#scene = new THREE.Scene();
 
-    this._setupCamera();
-    this._setupLight();
-    this._setupModel();
+    this.#setupCamera();
+    this.#setupLight();
+    this.#setupModel();
 
     window.onresize = this.resize.bind(this);
     this.resize();
     requestAnimationFrame(this.render.bind(this));
   }
 
-  _setupCamera() {
-    const width = this._divContainer.clientWidth;
-    const height = this._divContainer.clientHeight;
+  #setupCamera() {
+    const width = this.#divContainer.clientWidth;
+    const height = this.#divContainer.clientHeight;
 
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
     camera.position.z = 2;
-    this._camera = camera;
+    this.#camera = camera;
   }
-  _setupLight() {
+  #setupLight() {
     const color = 0xffffff;
     const intensity = 1;
     const light = new THREE.DirectionalLight(color, intensity);
     light.position.set(-1, 2, 4);
-    this._scene.add(light);
+    this.#scene.add(light);
   }
 
-  _setupModel() {
+  #setupModel() {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshPhongMaterial({ color: 0x44a88 });
 
-    const cube = new THREE.Mesh(geometry, material);
+    this.#cube = new THREE.Mesh(geometry, material);
 
-    this._scene.add(cube);
-    this._cube = cube;
+    this.#scene.add(this.#cube);
   }
 
   resize() {
-    const width = this._divContainer.clientWidth;
-    const height = this._divContainer.clientHeight;
+    const width = this.#divContainer.clientWidth;
+    const height = this.#divContainer.clientHeight;
 
-    this._camera.aspect = width / height;
-    this._camera.updateWorldMatrix();
+    this.#camera.aspect = width / height;
+    this.#camera.updateWorldMatrix();
 
-    this._renderer.setSize(width, height);
+    this.#renderer.setSize(width, height);
   }
 
   render(time) {
-    this._renderer.render(this._scene, this._camera);
+    this.#renderer.render(this.#scene, this.#camera);
     this.update(time);
     requestAnimationFrame(this.render.bind(this));
   }
 
   update(time) {
     time *= 0.001;
-    this._cube.rotation.x = time;
-    this._cube.rotation.y = time;
+    this.#cube.rotation.x = time;
+    this.#cube.rotation.y = time;
   }
 }
 
