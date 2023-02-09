@@ -46,11 +46,27 @@ class App {
 
   //물체 만드는 코드
   #setupModel() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    // 직사각형, 정사각형 만들기
+    // const geometry = new THREE.BoxGeometry(1, 1, 1);
+    // 원 만들기
+    // const geometry = new THREE.CircleGeometry(1, 32, Math.PI / 2, Math.PI);
+    // 콘 만들기
+    // const geometry = new THREE.ConeGeometry(1, 2, 32, 1, false, 0, Math.PI * 2);
+    // 실린더 만들기
+    // const geometry = new THREE.CylinderGeometry(1, 1, 1, 32, 1, false, 0, Math.PI * 2);
+    // 구 만들기
+    // const geometry = new THREE.SphereGeometry(1,32,16,0, Math.PI * 2, 0, Math.PI);
+    // 링 만들기
+    // const geometry = new THREE.RingGeometry(0.5, 1, 32, 1, 0, Math.PI * 2);
+    // 사각형 만들기
+    // const geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    // 도넛 모양 만들기
+    const geometry = new THREE.TorusKnotGeometry();
     const material = new THREE.MeshPhongMaterial({ color: 0x44a88 });
     this.#cube = new THREE.Mesh(geometry, material);
 
     const lineMaterial = new THREE.LineBasicMaterial({ color: "red" });
+    // 선 형태의 도형 만들기
     const line = new THREE.LineSegments(
       new THREE.WireframeGeometry(geometry),
       lineMaterial
