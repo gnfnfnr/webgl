@@ -1,4 +1,5 @@
 import * as THREE from "./three.js-master/build/three.module.js";
+import { OrbitControls } from "./three.js-master/examples/jsm/controls/OrbitControls.js";
 
 class App {
   #divContainer;
@@ -19,6 +20,7 @@ class App {
     this.#setupCamera();
     this.#setupLight();
     this.#setupModel();
+    this.#setupControls();
 
     window.onresize = this.resize.bind(this);
     this.resize();
@@ -42,12 +44,21 @@ class App {
     this.#scene.add(light);
   }
 
+  //물체 만드는 코드
   #setupModel() {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshPhongMaterial({ color: 0x44a88 });
-
     this.#cube = new THREE.Mesh(geometry, material);
 
+    const lineMaterial = new THREE.LineBasicMaterial({ color: "red" });
+    const line = new THREE.LineSegments(
+      new THREE.WireframeGeometry(geometry),
+      lineMaterial
+    );
+    const group = new THREE.Group();
+    group.add(this.#cube);
+    group.add(line);
+    this.#cube = group;
     this.#scene.add(this.#cube);
   }
 
@@ -69,8 +80,12 @@ class App {
 
   update(time) {
     time *= 0.001;
-    this.#cube.rotation.x = time;
-    this.#cube.rotation.y = time;
+    // this.#cube.rotation.x = time;
+    // this.#cube.rotation.y = time;
+  }
+
+  #setupControls() {
+    new OrbitControls(this.#camera, this.#divContainer);
   }
 }
 
