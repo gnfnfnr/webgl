@@ -5,7 +5,9 @@ class App {
   #renderer;
   #scene;
   #camera;
-  #cube;
+  #solorSystem;
+  #earthSystem;
+  #moonSystem;
 
   constructor() {
     this.#divContainer = document.querySelector("#webgl-container");
@@ -31,7 +33,7 @@ class App {
 
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
-    camera.position.z = 2;
+    camera.position.z = 50;
     this.#camera = camera;
   }
   #setupLight() {
@@ -43,12 +45,54 @@ class App {
   }
 
   #setupModel() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshPhongMaterial({ color: 0x44a88 });
+    // 태양계
+    const solarSystem = new THREE.Object3D();
+    this.#scene.add(solarSystem);
+    const radius = 1;
+    const widthSegments = 12;
+    const heightSegments = 12;
+    const sphereGeometry = new THREE.SphereGeometry(
+      radius,
+      widthSegments,
+      heightSegments
+    );
+    const sunMaterial = new THREE.MeshPhongMaterial({
+      emissive: 0xffff00,
+      flatShading: true,
+    });
 
-    this.#cube = new THREE.Mesh(geometry, material);
+    const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+    sunMesh.scale.set(3, 3, 3);
+    solarSystem.add(sunMesh);
 
-    this.#scene.add(this.#cube);
+    // 지구
+    const earthSystem = new THREE.Object3D();
+    solarSystem.add(earthSystem);
+    const earthMaterial = new THREE.MeshPhongMaterial({
+      color: 0x2233ff,
+      emissive: 0x112244,
+      flatShading: true,
+    });
+    const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
+    earthSystem.position.x = 10;
+    earthMesh.scale.set(1.8, 1.8, 1.8);
+    earthSystem.add(earthMesh);
+
+    const moonSystem = new THREE.Object3D();
+    moonSystem.position.x = 4;
+    earthSystem.add(moonSystem);
+
+    const moonMaterial = new THREE.MeshPhongMaterial({
+      color: 0x888888,
+      emissive: 0x222222,
+      flatShading: true,
+    });
+
+    const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
+    moonSystem.add(moonMesh);
+    this.#solorSystem = solarSystem;
+    this.#earthSystem = earthSystem;
+    this.#moonSystem = moonSystem;
   }
 
   resize() {
@@ -69,8 +113,9 @@ class App {
 
   update(time) {
     time *= 0.001;
-    this.#cube.rotation.x = time;
-    this.#cube.rotation.y = time;
+    this.#solorSystem.rotation.y = time / 2;
+    this.#earthSystem.rotation.y = time / 2;
+    this.#moonSystem.rotation.y = time * 5;
   }
 }
 
